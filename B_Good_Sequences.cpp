@@ -156,11 +156,89 @@ void dbs(string str, T t, S... s)
 // the war has not ended yet.
 
 // Template ends
+
+#define MAXN 100002
+int spf[MAXN];
+int ml[MAXN];
+void sieve()
+{
+    spf[1] = 1;
+    for (int i = 2; i < MAXN; i++)
+        spf[i] = i;
+    for (int i = 4; i < MAXN; i += 2)
+        spf[i] = 2;
+    for (int i = 3; i * i < MAXN; i++)
+    {
+        if (spf[i] == i)
+        {
+            for (int j = i * i; j < MAXN; j += i)
+                if (spf[j] == j)
+                    spf[j] = i;
+        }
+    }
+}
 void solve()
 {
-    // int n;
-    // cin>>n;
-    // av(a,n);
+    sieve();
+    memset(ml, 0, sizeof ml);
+    int n;
+    cin >> n;
+    // pr(n);
+    av(a, n);
+    int dp[n] = {0};
+    dp[n - 1] = 1;
+    // pr("Done till here 1");
+    while (a[n - 1] != 1)
+    {
+        if (a[n - 1] % spf[a[n - 1]] == 0)
+        {
+            int curr = spf[a[n - 1]];
+            ml[spf[a[n - 1]]] = 1;
+            while (a[n - 1] % curr == 0)
+            {
+                a[n - 1] /= curr;
+            }
+        }
+    }
+
+    // pr("Done");
+    for (int i = n - 2; i >= 0; i--)
+    {
+        int mxm = 0;
+        int tmp = a[i];
+        // pr(tmp,i,n);
+        while (tmp != 1)
+        {
+            if (tmp % spf[tmp] == 0)
+            {
+                int curr = spf[tmp];
+                mxm = max(mxm, ml[spf[tmp]]);
+                while (tmp % curr == 0)
+                {
+                    // pr(curr,tmp,i);
+                    tmp /= curr;
+                }
+            }
+        }
+        tmp = a[i];
+        dp[i] = mxm + 1;
+        while (tmp != 1)
+        {
+            int curr = spf[tmp];
+            ml[curr] = mxm + 1;
+            while (tmp % curr == 0)
+            {
+                tmp /= curr;
+            }
+        }
+    }
+
+    int res = 0;
+    for (int i = 0; i < n; i++)
+    {
+        res = max(res, dp[i]);
+    }
+    cout << res << endl;
 }
 int32_t main()
 {
@@ -169,7 +247,7 @@ int32_t main()
         vsingh
 
         int t = 1;
-    cin >> t;
+    // cin >> t;
     while (t--)
         solve();
 
