@@ -158,9 +158,65 @@ void dbs(string str, T t, S... s)
 // Template ends
 void solve()
 {
-	// int n;
-	// cin>>n;
-	// av(a,n);
+	e2(n,k);
+	av(a,n);
+	int ps[n];
+	ps[0]=a[0];
+	for(int i=1;i<n;i++)
+	{
+		ps[i]=ps[i-1];
+		ps[i]+=a[i];
+	}
+	int dp[n];
+	for(int i=n-1;i>=n-k;i--)
+	{
+		dp[i]=0;
+	}
+	dp[n-k]=ps[n-1]-ps[n-1-k];
+	for(int i=n-k-1;i>0;i--)
+	{
+		dp[i]=ps[i+k-1]-ps[i-1];
+	}
+	dp[0]=ps[k-1];
+	int ms[n];
+	ms[n-1]=a[n-1];
+	int id[n];
+	id[n-1]=n-1;
+	for(int i=n-2;i>=0;i--)
+	{
+		if(dp[i]>=ms[i+1])
+		{
+			id[i]=i;
+		}
+		else
+		{
+			id[i]=id[i+1];
+		}
+		ms[i]=max(ms[i+1],dp[i]);
+	}
+	pra(ms,n);
+	pra(dp,n);
+	pra(id,n);
+	int sum=0ll;
+	int aa=0;
+	int b=0;
+	for(int i=0;i<n;i++)
+	{
+		if(i+k<n)
+		{
+			if(dp[i]+ms[i+k]>sum)
+			{
+				aa=i;
+				b=id[i+k];
+				sum=dp[i]+ms[i+k];
+			}
+		}
+		else
+		{
+			B;
+		}
+	}
+	cout<<aa+1<<" "<<b+1<<endl;
 }
 int32_t main()
 {
