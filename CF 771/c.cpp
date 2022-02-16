@@ -156,37 +156,74 @@ void dbs(string str, T t, S... s)
 
 
 // Template ends
-
+int par[N];
+int rnk[N];
+int find(int a)
+{
+	if(par[a]==a)
+	{
+		return a;
+	}
+	return par[a]=find(par[a]);
+}
+void uni(int a,int b)
+{
+	a=find(a);
+	b=find(b);
+	if(a==b)
+	{
+		return;
+	}
+	if(rnk[a]>rnk[b])
+	{
+		rnk[a]+=rnk[b];
+		par[b]=a;
+	}
+	else
+	{
+		rnk[b]+=rnk[a];
+		par[a]=b;
+	}
+}
 void solve()
 {
 	int n;
 	cin>>n;
 	av(a,n);
-	int st=1;
-	int mxm=a[0];
-	vi ind(n+1,0);
-	int i=0;
-	int cnt=0;
-	while(i<n)
+	for(int i=0;i<=n;i++)
 	{
-		ind[a[i]]=1;
-		if(a[i]>mxm)
+		par[i]=i;
+	}
+	for(int i=0;i<=n;i++)
+	{
+		rnk[i]=1;
+	}
+	mii ind;
+	ind[a[0]]=1;
+	par[a[0]]=1;
+	for(int i=1;i<n;i++)
+	{
+		if(ind.UB(a[i])!=ind.end())
 		{
-			mxm=a[i];
+			pii p=*ind.UB(a[i]);
+			ind[a[i]]=i+1;
+			uni(p.ss,i+1);
 		}
-		if(st==a[i])
+		else
 		{
-			st++;
-			while(ind[st]==1)
-			{
-				st++;
-			}
+			ind[a[i]]=i+1;
 		}
-		if(st>mxm)
+	}
+	// pr("Done till here");
+	int cnt=0;
+	for(int i=1;i<=n;i++)
+	{
+		int k=find(i);
+		pr(k,i);
+		if(k==i)
 		{
 			cnt++;
 		}
-		i++;
 	}
 	cout<<cnt<<endl;
 }
