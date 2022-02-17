@@ -156,64 +156,76 @@ void dbs(string str, T t, S... s)
 
 
 // Template ends
-vvi gr;
+int vis[N];
+vi ans;
+vi gr[N];
+int h[N];
+bool dfs(int src)
+{
+	vis[src]=1;
+	h[src]=1;
+	for(auto v:gr[src])
+	{
+		if(vis[v]==0)
+		{
+			bool cycle_mila=dfs(v);
+			if(cycle_mila)
+			{
+				return true;
+			}
+		}
+		if(vis[v]==1 && h[v]==1)
+		{
+			return true;
+		}
+	}
+	ans.pb(src);
+	h[src]=0;
+	return false;
+}
 void solve()
 {
-	int n;
-	cin >> n;
-	gr.resize(n);
-	vector<pii>ind;
-	for (int i = 0; i < n - 1; i++)
+	int n,k;
+	cin>>n>>k;
+	memset(vis,0,sizeof vis);
+	memset(h,0,sizeof h);
+	vi req(k);
+	for(int i=0;i<k;i++)
 	{
-		int a, b;
-		cin >> a >> b;
-		a--; b--;
-		gr[a].pb(b);
-		gr[b].pb(a);
-		ind.pb(mp(min(a, b), max(a, b)));
+		cin>>req[i];
 	}
-	int mxsize = 0;
-	for (int i = 0; i < n; i++)
+	for(int i=1;i<=n;i++)
 	{
-		mxsize = max(mxsize, gr[i].size() * 1ll);
-	}
-	map<pii, int>m;
-	bool flag=false;
-	int curr = 0;
-	if (mxsize > 2)
-	{
-		flag=true;
-		int id = -1;
-		for (int i = 0; i < n; i++)
+		int l;
+		cin>>l;
+		if(l)
 		{
-			if (gr[i].size() >= 3)
+			for(int j=0;j<l;j++)
 			{
-				id = i;
-				B;
-			}
-		}
-		for (auto v : gr[id])
-		{
-			pii p = mp(min(v, id), max(v, id));
-			if (m.find(p) == m.end())
-			{
-				m[p] = curr;
-				curr++;
+				int x;
+				cin>>x;
+				gr[i].pb(x);
 			}
 		}
 	}
-	for(auto v:ind)
+	for(int i=0;i<req.size();i++)
 	{
-		if(m.find(v)!=m.end())
+		if(vis[req[i]]==0)
 		{
-			cout<<m[v]<<endl;
-		}
-		else
-		{
-			cout<<curr<<endl;
-			curr++;
+			bool mila=dfs(req[i]);
+			if(mila)
+			{
+				cout<<-1<<endl;
+				R;
+			}
 		}
 	}
+	cout<<ans.size()<<endl;
+	for(auto v:ans)
+	{
+		cout<<v<<" ";
+	}
+	cout<<endl;
 }
 int32_t main()
 {

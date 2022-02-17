@@ -156,64 +156,41 @@ void dbs(string str, T t, S... s)
 
 
 // Template ends
-vvi gr;
 void solve()
 {
 	int n;
-	cin >> n;
-	gr.resize(n);
-	vector<pii>ind;
-	for (int i = 0; i < n - 1; i++)
+	cin>>n;
+	av(ql,n);
+	int m;
+	cin>>m;
+	vector<pii>gr[1001];
+	for(int i=0;i<m;i++)
 	{
-		int a, b;
-		cin >> a >> b;
-		a--; b--;
-		gr[a].pb(b);
-		gr[b].pb(a);
-		ind.pb(mp(min(a, b), max(a, b)));
+		int a,b,cst;
+		cin>>a>>b>>cst;
+		gr[b].pb(mp(a,cst));
 	}
-	int mxsize = 0;
-	for (int i = 0; i < n; i++)
+	int cnt=0;
+	int mncst=0;
+	for(int i=1;i<=n;i++)
 	{
-		mxsize = max(mxsize, gr[i].size() * 1ll);
-	}
-	map<pii, int>m;
-	bool flag=false;
-	int curr = 0;
-	if (mxsize > 2)
-	{
-		flag=true;
-		int id = -1;
-		for (int i = 0; i < n; i++)
+		int mnm=inf;
+		for(auto v:gr[i])
 		{
-			if (gr[i].size() >= 3)
-			{
-				id = i;
-				B;
-			}
+			mnm=min(mnm,v.ss);
 		}
-		for (auto v : gr[id])
+		if(gr[i].size())
 		{
-			pii p = mp(min(v, id), max(v, id));
-			if (m.find(p) == m.end())
-			{
-				m[p] = curr;
-				curr++;
-			}
+			cnt++;
+			mncst+=mnm;
 		}
 	}
-	for(auto v:ind)
+	if(cnt!=n-1)
 	{
-		if(m.find(v)!=m.end())
-		{
-			cout<<m[v]<<endl;
-		}
-		else
-		{
-			cout<<curr<<endl;
-			curr++;
-		}
+		cout<<-1<<endl;
+		R;
 	}
+	cout<<mncst<<endl;
 }
 int32_t main()
 {

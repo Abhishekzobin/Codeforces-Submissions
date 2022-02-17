@@ -156,62 +156,51 @@ void dbs(string str, T t, S... s)
 
 
 // Template ends
-vvi gr;
+int a[111], b[111];
+
+bool f[111];
+int n = 0;
+void dfs(int i)
+{
+	f[i] = true;
+	for (int k = 1; k <= n; k++)
+	{
+		if (f[k])
+			continue;
+		if (a[i] > a[k] && a[i] < b[k])
+			dfs(k);
+		else if (b[i] > a[k] && b[i] < b[k])
+			dfs(k);
+	}
+}
+int k;
+
 void solve()
 {
-	int n;
-	cin >> n;
-	gr.resize(n);
-	vector<pii>ind;
-	for (int i = 0; i < n - 1; i++)
+	cin >> k;
+	memset(a, 0, sizeof(a));
+	memset(b, 0, sizeof(b));
+	memset(f, 0, sizeof(f));
+	for (int i = 1; i <= k; i++)
 	{
-		int a, b;
-		cin >> a >> b;
-		a--; b--;
-		gr[a].pb(b);
-		gr[b].pb(a);
-		ind.pb(mp(min(a, b), max(a, b)));
-	}
-	int mxsize = 0;
-	for (int i = 0; i < n; i++)
-	{
-		mxsize = max(mxsize, gr[i].size() * 1ll);
-	}
-	map<pii, int>m;
-	bool flag=false;
-	int curr = 0;
-	if (mxsize > 2)
-	{
-		flag=true;
-		int id = -1;
-		for (int i = 0; i < n; i++)
+		int x, y, m;
+		cin >> m;
+		if (m == 1)
 		{
-			if (gr[i].size() >= 3)
-			{
-				id = i;
-				B;
-			}
+			n++;
+			cin >> a[n];
+			cin >> b[n];
 		}
-		for (auto v : gr[id])
+		if (m == 2)
 		{
-			pii p = mp(min(v, id), max(v, id));
-			if (m.find(p) == m.end())
-			{
-				m[p] = curr;
-				curr++;
-			}
-		}
-	}
-	for(auto v:ind)
-	{
-		if(m.find(v)!=m.end())
-		{
-			cout<<m[v]<<endl;
-		}
-		else
-		{
-			cout<<curr<<endl;
-			curr++;
+			cin >> x;
+			cin >> y;
+			memset(f, 0, sizeof(f));
+			dfs(x);
+			if (f[y])
+				cout << "YES" << endl;
+			else
+				cout << "NO" << endl;
 		}
 	}
 }

@@ -156,64 +156,70 @@ void dbs(string str, T t, S... s)
 
 
 // Template ends
-vvi gr;
 void solve()
 {
-	int n;
-	cin >> n;
-	gr.resize(n);
-	vector<pii>ind;
-	for (int i = 0; i < n - 1; i++)
+	int n, m;
+	cin >> n >> m;
+	int k;
+	cin >> k;
+	bool left = true;
+	int ch = 1;
+	int cv = 1;
+	k--;
+	while (k--)
 	{
-		int a, b;
-		cin >> a >> b;
-		a--; b--;
-		gr[a].pb(b);
-		gr[b].pb(a);
-		ind.pb(mp(min(a, b), max(a, b)));
-	}
-	int mxsize = 0;
-	for (int i = 0; i < n; i++)
-	{
-		mxsize = max(mxsize, gr[i].size() * 1ll);
-	}
-	map<pii, int>m;
-	bool flag=false;
-	int curr = 0;
-	if (mxsize > 2)
-	{
-		flag=true;
-		int id = -1;
-		for (int i = 0; i < n; i++)
+		cout << 2 << " ";
+		if (left == true)
 		{
-			if (gr[i].size() >= 3)
+			cout<<cv<<" "<<ch<<" ";
+			ch++;
+			if(ch<n)
 			{
-				id = i;
-				B;
+				cout<<cv<<" "<<ch<<" ";
+				ch++;
 			}
-		}
-		for (auto v : gr[id])
-		{
-			pii p = mp(min(v, id), max(v, id));
-			if (m.find(p) == m.end())
+			else if(ch==n)
 			{
-				m[p] = curr;
-				curr++;
+				cout<<cv<<" "<<ch<<" ";
+				ch=1;
+				cv++;
+				left=true;
 			}
-		}
-	}
-	for(auto v:ind)
-	{
-		if(m.find(v)!=m.end())
-		{
-			cout<<m[v]<<endl;
+			else
+			{
+				ch=n-1;
+				cv++;
+				cout<<cv<<" "<<m<<" ";
+				left=false;
+			}
 		}
 		else
 		{
-			cout<<curr<<endl;
-			curr++;
+			cout<<2<<" ";
+			cout<<cv<<" "<<ch<<" ";
+			ch--;
+			if(ch>1)
+			{
+				cout<<cv<<" "<<ch<<" ";
+				ch--;
+			}
+			else if(ch==1)
+			{
+				cout<<cv<<" "<<1<<" ";
+				left=true;
+				ch=1;
+				cv++;
+			}
+			else if(ch<1)
+			{
+				cv++;
+				cout<<cv<<" "<<1<<" ";
+				ch=2;
+				left=true;
+			}
 		}
 	}
+	
 }
 int32_t main()
 {
