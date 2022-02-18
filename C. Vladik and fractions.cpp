@@ -152,57 +152,23 @@ void dbs(string str, T t, S... s)
 // No matter how great the defeat is,
 // if I am not the one winning,
 // the war has not ended yet.
-int n,m,x;
-bool gcd(int a,int b)
-{
-	if(a>b)
-	{
-		swap(a,b);
-	}
-	if(a==x || b==x)
-	{
-		return true;
-	}
-	if(a&& x%a==b%a && x>a && x<b)
-	{
-		return true;
-	}
-	if(a==0 || b==0)
-	{
-		if(a==x || b==x)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	return gcd(b%a,a);
-}
+
+
+
 // Template ends
 void solve()
 {
-	cin>>n>>m>>x;
-	if(n>m)
+	int n;
+	cin>>n;
+	if(n<=1)
 	{
-		swap(n,m);
-	}
-	bool g=gcd(n,m);
-	if(x>max(n,m))
-	{
-		cout<<"NO"<<endl;
-		R;
-	}
-	pr(g);
-	if(g)
-	{
-		cout<<"YES"<<endl;
+		cout<<-1<<endl;
 	}
 	else
-	{
-		cout<<"NO"<<endl;
-	}
+		{
+			cout<<n<<" "<<n+1<<" "<<n*(n+1)<<endl;
+		}
+	// av(a,n);
 }
 int32_t main()
 {
@@ -211,7 +177,7 @@ int32_t main()
 	vsingh
 
 	int t = 1;
-	cin>>t;
+	// cin>>t;
 	while (t--)
 		solve();
 
